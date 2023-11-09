@@ -1,3 +1,10 @@
+
+#####################   NOTE   #####################
+# Create a copy of this file and rename it to constants.py
+# Fill in the constants below with the correct values for your environment
+####################################################
+
+
 ##### JWT Constants #####
 JWT_SECRET_KEY = ""
 

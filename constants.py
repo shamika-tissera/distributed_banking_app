@@ -1,3 +1,6 @@
+##### JWT Constants #####
+JWT_SECRET_KEY = "hftAs9zyQCf5"
+
 ##### MySQL DB Constants #####
 MYSQL_HOST = "localhost"
 MYSQL_USER = "root"

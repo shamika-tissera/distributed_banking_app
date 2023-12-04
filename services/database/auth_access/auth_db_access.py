@@ -6,7 +6,7 @@ import bcrypt
 
 sys.path.append(os.path.abspath('.'))
 import constants
-
+from enums import RegisterUserInfo
 
 connection = pyodbc.connect(
     "Driver={ODBC Driver 17 for SQL Server};"
@@ -14,10 +14,6 @@ connection = pyodbc.connect(
     f"Database={constants.SQLSERVER_DB};"
     "Trusted_Connection=yes;"
 )
-
-def get_password_hash(password: str) -> str:
-    """Returns the hash of the password"""
-    return password
 
 def login(username: str, password: str) -> bool:
     """Checks if the user is valid in the database"""
@@ -43,8 +39,18 @@ def login(username: str, password: str) -> bool:
         logging.error("Credentials invalid for requested username: %s", username)
         return False
         
-def register(username: str, password: str, email: str = None) -> bool:
+def register(username: str, password: str, email: str = "") -> RegisterUserInfo:
     cursor = connection.cursor()
+    salt = bcrypt.gensalt()
+    try:
+        cursor.execute("""
+                    INSERT INTO users (username, password, email)
+                    VALUES (?, ?, ?)
+                """, (username, bcrypt.hashpw(bytes(password.encode()), salt).decode('UTF-8'), email))
     
+        cursor.commit()
+    except pyodbc.IntegrityError:
+        logging.error("Username cannot be saved. Duplicate username.")        
+        return RegisterUserInfo.USERNAME_UNAVAILABLE
     
-    
+    return RegisterUserInfo.SUCCESS

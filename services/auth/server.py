@@ -1,23 +1,19 @@
 import inspect
 import sys
-import jwt, datetime, os
-from flask import Flask, request
-from flask import jsonify
 import logging
-
+import datetime
+import os
 # Importing constants from parent directory by appending to sys.path
 sys.path.append(os.path.abspath('.'))
 import constants
 from services.database.auth_access import auth_db_access
+import jwt
+from flask import Flask, request
+from flask import jsonify
 
 app = Flask(__name__)
 
-
-app.config["MYSQL_HOST"] = constants.MYSQL_HOST
-app.config["MYSQL_USER"] = constants.MYSQL_USER
-app.config["MYSQL_PASSWORD"] = constants.MYSQL_PASSWORD
-app.config["MYSQL_DB"] = constants.MYSQL_DB
-app.config["MYSQL_PORT"] = constants.MYSQL_PORT
+app.config["JWT_SECRET"] = constants.JWT_SECRET_KEY
 
 @app.route("/auth/login", methods=["POST"])
 def login():
@@ -32,7 +28,7 @@ def login():
         token = jwt.encode({
             "user": auth.username,
             "exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=30)
-        }, constants.JWT_SECRET_KEY)
+        }, app.config["JWT_SECRET"])
         return jsonify({"token": token.decode("UTF-8")})
     
 app.run()

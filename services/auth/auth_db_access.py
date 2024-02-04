@@ -5,8 +5,8 @@ import logging
 import bcrypt
 
 sys.path.append(os.path.abspath('.'))
+from services.auth.enums import RegisterUserInfo
 import constants
-from enums import RegisterUserInfo
 
 connection = pyodbc.connect(
     "Driver={ODBC Driver 17 for SQL Server};"

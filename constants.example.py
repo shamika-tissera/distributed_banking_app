@@ -8,7 +8,7 @@
 ##### JWT Constants #####
 JWT_SECRET_KEY = ""
 
-##### MySQL DB Constants #####
+##### SQL SERVER DB Constants #####
 SQLSERVER_HOST = ""
 SQLSERVER_USER = ""
 SQLSERVER_PASSWORD = ""

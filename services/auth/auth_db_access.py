@@ -5,7 +5,7 @@ import logging
 import bcrypt
 
 sys.path.append(os.path.abspath('.'))
-from services.auth.enums import RegisterUserInfo
+from enums import RegisterUserInfo
 import constants
 
 connection = pyodbc.connect(
@@ -43,14 +43,48 @@ def register(username: str, password: str, email: str = "") -> RegisterUserInfo:
     cursor = connection.cursor()
     salt = bcrypt.gensalt()
     try:
+        
+        # create transaction to insert user into the database and set the user's initial balance to 0
         cursor.execute("""
-                    INSERT INTO users (username, password, email)
-                    VALUES (?, ?, ?)
-                """, (username, bcrypt.hashpw(bytes(password.encode()), salt).decode('UTF-8'), email))
-    
+                        BEGIN TRANSACTION
+
+                        INSERT INTO users (username, password, email)
+                        VALUES (?, ?, ?)
+                    """, (username, bcrypt.hashpw(bytes(password.encode()), salt).decode('UTF-8'), email))
+        cursor.execute("""
+                        INSERT INTO customer_cash (username, amount)
+                        VALUES (?, ?)
+                    """, (username, 0))
         cursor.commit()
+        
     except pyodbc.IntegrityError:
         logging.error("Username cannot be saved. Duplicate username.")        
         return RegisterUserInfo.USERNAME_UNAVAILABLE
     
+    except Exception as e:
+        logging.error("An error occurred while setting initial balance for user %s. Error: %s", username, e)
+        # Rollback the user registration
+        cursor.execute("ROLLBACK TRANSACTION")
+        return RegisterUserInfo.INTERNAL_FAILIURE
     return RegisterUserInfo.SUCCESS
+
+def is_valid_user(username: str) -> bool:
+    cursor = connection.cursor()
+    cursor.execute(f"""
+                    SELECT username 
+                    FROM users 
+                    WHERE 
+                        username = '{username}'
+                        """
+                    )
+    try:
+        cursor.fetchone()[0]
+        return True
+    except TypeError:
+        return False
+    except pyodbc.ProgrammingError:
+        logging.error("Cannot verify user %s", username)
+        return False
+    except Exception as e:
+        logging.error("An error occurred while verifying user %s. Error: %s", username, e)
+        return False

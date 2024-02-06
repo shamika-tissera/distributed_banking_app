@@ -30,7 +30,8 @@ def login():
         token = jwt.encode({
             "user": auth['username'],
             "exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=30)
-        }, app.config["JWT_SECRET"])
+        }, app.config["JWT_SECRET"],
+            algorithm="HS256")
         return jsonify({"token": str(token)})
 
 @app.route("/auth/register", methods=["POST"])
@@ -40,6 +41,8 @@ def register():
     password = data["password"]
     email = data["email"]
     register_status = auth_db_access.register(username, password, email)
+    print("register_status: ", register_status)
+    print("register_status == RegisterUserInfo.SUCCESS: ", register_status == RegisterUserInfo.SUCCESS)
     
     if register_status == RegisterUserInfo.SUCCESS:
         logging.info("User {} registered".format(username))
@@ -50,7 +53,7 @@ def register():
         return jsonify({"message": "Internal failiure"}), 500
 
 if __name__ == "__main__":
-    if not checker.check_constants_file_made():
-        logging.error("Constants file not found. Please create one. Exiting...")
-        sys.exit(1)
-    app.run()
+    # if not checker.check_constants_file_made():
+    #     logging.error("Constants file not found. Please create one. Exiting...")
+    #     sys.exit(1)
+    app.run(host="127.0.0.1", port=5001)

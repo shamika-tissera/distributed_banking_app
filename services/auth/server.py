@@ -1,5 +1,6 @@
 import inspect
 import sys
+import auth_db_access
 import logging
 import datetime
 import os
@@ -7,7 +8,6 @@ import helper.checker as checker
 # Importing constants from parent directory by appending to sys.path
 sys.path.append(os.path.abspath('.'))
 import constants
-from services.auth import auth_db_access
 import jwt
 from flask import Flask, request
 from flask import jsonify
@@ -41,8 +41,6 @@ def register():
     password = data["password"]
     email = data["email"]
     register_status = auth_db_access.register(username, password, email)
-    print("register_status: ", register_status)
-    print("register_status == RegisterUserInfo.SUCCESS: ", register_status == RegisterUserInfo.SUCCESS)
     
     if register_status == RegisterUserInfo.SUCCESS:
         logging.info("User {} registered".format(username))
@@ -56,4 +54,8 @@ if __name__ == "__main__":
     # if not checker.check_constants_file_made():
     #     logging.error("Constants file not found. Please create one. Exiting...")
     #     sys.exit(1)
-    app.run(host="127.0.0.1", port=5001)
+    
+    # print IP address
+    ip = os.popen('hostname -I').read()
+    
+    app.run(host="0.0.0.0", port=5000)

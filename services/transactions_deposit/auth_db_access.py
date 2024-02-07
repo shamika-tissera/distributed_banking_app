@@ -16,6 +16,15 @@ connection = pyodbc.connect(
 )
 
 def is_valid_user(username: str) -> bool:
+    """
+    Check if the given username is a valid user in the database.
+
+    Args:
+        username (str): The username to be checked.
+
+    Returns:
+        bool: True if the username is valid, False otherwise.
+    """
     cursor = connection.cursor()
     cursor.execute(f"""
                     SELECT username 

@@ -1,5 +1,5 @@
 import sys
-import os
+import os 
 import pyodbc
 import logging
 import bcrypt
@@ -12,7 +12,8 @@ connection = pyodbc.connect(
     "Driver={ODBC Driver 17 for SQL Server};"
     f"Server={constants.SQLSERVER_HOST};"
     f"Database={constants.SQLSERVER_DB};"
-    "Trusted_Connection=yes;"
+    f"UID={constants.SQLSERVER_USER};"
+    f"PWD={constants.SQLSERVER_PASSWORD};"
 )
 
 def login(username: str, password: str) -> bool:

@@ -18,9 +18,7 @@ app.config["JWT_SECRET"] = constants.JWT_SECRET_KEY
 
 @app.route("/transactions/deposit", methods=["POST"])
 def transactions_deposit():
-    # receice JWT token
     token = request.headers.get('Authorization')
-    print(token)
     if not token:
         return jsonify({"message": "No authorization provided"}), 401
     
@@ -60,4 +58,4 @@ def transactions_deposit():
         return jsonify({"message": "Internal failure"}), 500
     
 if __name__ == "__main__":
-    app.run()
+    app.run(host="0.0.0.0", port=5001)

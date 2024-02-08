@@ -49,6 +49,17 @@ def register():
         return jsonify({"message": "Username taken"}), 409
     else:
         return jsonify({"message": "Internal failiure"}), 500
+    
+@app.route("/auth/validate-token", methods=["POST"])
+def validate_token():
+    token = request.get_json()["token"]
+    try:
+        jwt.decode(token, app.config["JWT_SECRET"], algorithms=["HS256"])
+        return jsonify({"message": "Token is valid"}), 200
+    except jwt.ExpiredSignatureError:
+        return jsonify({"message": "Token has expired"}), 401
+    except jwt.InvalidTokenError:
+        return jsonify({"message": "Invalid token"}), 401
 
 if __name__ == "__main__":
     # if not checker.check_constants_file_made():
@@ -56,6 +67,6 @@ if __name__ == "__main__":
     #     sys.exit(1)
     
     # print IP address
-    ip = os.popen('hostname -I').read()
+    print(os.popen('hostname -I').read())
     
     app.run(host="0.0.0.0", port=5000)

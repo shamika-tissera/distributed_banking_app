@@ -32,6 +32,9 @@ def login(username: str, password: str) -> bool:
     except IndexError:
         logging.error("Cannot verify credentials for %s", username)
         return False
+    except Exception as e:
+        logging.error("An error occurred while verifying credentials for %s. Error: %s", username, e)
+        return False
     
     if bcrypt.checkpw(bytes(password.encode()), bytes(hashed_password.strip().encode())):
         logging.info("%s logged in", username)

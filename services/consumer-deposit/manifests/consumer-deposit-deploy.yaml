@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: consumer-deposit
+  labels:
+    app: consumer-deposit
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: consumer-deposit
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 8
+  template:
+    metadata:
+      labels:
+        app: consumer-deposit
+    spec:
+      containers:
+        - name: consumer-deposit
+          image: shamikatissera/consumer-deposit
+          envFrom:
+            - configMapRef:
+                name: consumer-deposit-configmap
+            - secretRef:
+                name: consumer-deposit-secret

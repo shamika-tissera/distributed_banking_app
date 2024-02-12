@@ -18,6 +18,12 @@ app.config["JWT_SECRET"] = constants.JWT_SECRET_KEY
 
 @app.route("/transactions/deposit", methods=["POST"])
 def transactions_deposit():
+    """
+    Endpoint for depositing funds into a user's account.
+
+    Returns:
+        JSON: A JSON response indicating the success or failure of the deposit.
+    """
     token = request.headers.get('Authorization')
     if not token:
         return jsonify({"message": "No authorization provided"}), 401

@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: consumer-deposit-configmap
+data:
+  SQLSERVER_HOST: host.docker.internal
+  SQLSERVER_DB: Distributed_Banking_DB
+

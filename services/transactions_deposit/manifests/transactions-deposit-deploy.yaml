@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: transactions-deposit
+spec:
+  selector:
+    matchLabels:
+      app: transactions-deposit
+  template:
+    metadata:
+      labels:
+        app: transactions-deposit
+    spec:
+      containers:
+      - name: transactions-deposit
+        image: shamikatissera/transactions-deposit
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 5001

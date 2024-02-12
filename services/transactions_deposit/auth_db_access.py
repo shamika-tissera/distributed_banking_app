@@ -46,6 +46,16 @@ def is_valid_user(username: str) -> bool:
         return False
 
 def transactions_deposit(username: str, amount: float) -> bool:
+    """
+    Deposits the specified amount into the customer's account.
+
+    Args:
+        username (str): The username of the customer.
+        amount (float): The amount to be deposited.
+
+    Returns:
+        bool: True if the deposit is successful, False otherwise.
+    """
     cursor = connection.cursor()
     cursor.execute(f"""
                     SELECT amount 

@@ -1,25 +1,19 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: nginx-ingress
+  name: gateway-ingress
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
 spec:
   rules:
-  - host: ticketing.dev
+  - host: distributed-banking-app.kln.ac.lk
     http:
       paths:
-      - path: /api/users/?(.*)
-        pathType: Prefix
-        backend:
-          service:
-            name: auth-srv
-            port:
-              number: 3000
-      - path: /?(.*)
-        pathType: Prefix
-        backend:
-          service:
-            name: client-srv
-            port:
-              number: 3000
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: gateway
+              port:
+                number: 8080

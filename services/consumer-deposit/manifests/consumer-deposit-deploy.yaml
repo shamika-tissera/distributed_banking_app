@@ -5,7 +5,7 @@ metadata:
   labels:
     app: consumer-deposit
 spec:
-  replicas: 4
+  replicas: 1
   selector:
     matchLabels:
       app: consumer-deposit

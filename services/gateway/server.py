@@ -1,4 +1,4 @@
-import os, pika, json
+import pika
 from flask import Flask, request, jsonify
 from auth_svc.login import login as login_service
 from auth_svc.validate_token import validate_token
@@ -36,18 +36,18 @@ def deposit():
         If the deposit is successful, returns a JSON response with a success message and a status code of 200.
         If there is an error during the deposit process, returns a JSON response with an error message and the corresponding status code.
     """
-    token, error_msg, status_code = validate_token(request.headers.get('Authorization'))
+    is_valid_token, msg, status_code = validate_token(request.headers.get('Authorization'))
     
-    if not token:
-        return jsonify(error_msg), status_code
+    if not is_valid_token:
+        return jsonify(msg), status_code
     
-    deposit_status = deposit_service(request, channel)
+    deposit_status, err = deposit_service(msg['username'], request, channel)
     
-    # deposit_status, error_msg, status_code = deposit_service(request)
     if deposit_status:
         return jsonify({"message": "Deposit successful"}), 200
     else:
-        return jsonify(error_msg), status_code
+        print(err)
+        return jsonify({"message": "Internal failure"}), 500
 
 @app.route("/withdraw", methods=["POST"])
 def withdraw():
@@ -70,4 +70,4 @@ def withdraw():
         return jsonify(error_msg), status_code
     
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5555)
+    app.run(host="0.0.0.0", port=8080)

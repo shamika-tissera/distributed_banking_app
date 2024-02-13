@@ -6,14 +6,13 @@ import bcrypt
 
 sys.path.append(os.path.abspath('.'))
 from enums import RegisterUserInfo
-import constants
 
 connection = pyodbc.connect(
     "Driver={ODBC Driver 17 for SQL Server};"
-    f"Server={constants.SQLSERVER_HOST};"
-    f"Database={constants.SQLSERVER_DB};"
-    f"UID={constants.SQLSERVER_USER};"
-    f"PWD={constants.SQLSERVER_PASSWORD};"
+    f"Server={os.environ.get('SQLSERVER_HOST')};"
+    f"Database={os.environ.get('SQLSERVER_DB')};"
+    f"UID={os.environ.get('SQLSERVER_USER')};"
+    f"PWD={os.environ.get('SQLSERVER_PASSWORD')};"
 )
 
 def login(username: str, password: str) -> bool:

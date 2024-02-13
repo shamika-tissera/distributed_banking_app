@@ -15,8 +15,7 @@ from enums import RegisterUserInfo
 
 app = Flask(__name__)
 
-app.config["JWT_SECRET"] = constants.JWT_SECRET_KEY
-
+app.config["JWT_SECRET"] = os.environ.get("JWT_SECRET")
 @app.route("/auth/login", methods=["POST"])
 def login():
     """
@@ -74,8 +73,8 @@ def validate_token():
     """
     token = request.get_json()["token"]
     try:
-        jwt.decode(token, app.config["JWT_SECRET"], algorithms=["HS256"])
-        return jsonify({"message": "Token is valid"}), 200
+        decoded = jwt.decode(token, app.config["JWT_SECRET"], algorithms=["HS256"])
+        return decoded, 200
     except jwt.ExpiredSignatureError:
         return jsonify({"message": "Token has expired"}), 401
     except jwt.InvalidTokenError:

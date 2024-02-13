@@ -3,12 +3,14 @@ import requests
 import pika
 import json
 
-def deposit(request, channel):
+def deposit(username, request, channel):
+    
+    request = request.get_json()
     
     amount = request["amount"]
     
     message = {
-        "username": "<username>",
+        "username": username,
         "amount": amount,
     }
     
@@ -21,17 +23,8 @@ def deposit(request, channel):
                 delivery_mode=pika.spec.PERSISTENT_DELIVERY_MODE
             ),
         )
-    except:
-        return False
+    except Exception as e:
+        print(" [x] Error: ", e)
+        return False, str(e)
     
-    return True
-    # response = requests.post(
-    #     f"http://localhost:5000/transactions/deposit",
-    #     json=request,
-    #     timeout=10
-    # )
-
-    # if response.status_code == 200:
-    #     return True, None, 200
-    # else:
-    #     return False, response.json(), response.status_code
+    return True, None

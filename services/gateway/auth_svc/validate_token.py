@@ -1,4 +1,4 @@
-import requests
+import requests, os
 
 def validate_token(token) -> tuple:
     """
@@ -11,13 +11,13 @@ def validate_token(token) -> tuple:
         tuple: A tuple containing the validation result, error message (if any), and status code.
     """
     response = requests.post(
-        f"http://localhost:5000/auth/validate-token",
+        f"http://{os.environ.get('AUTH_SVC_ADDRESS')}/auth/validate-token",
         json={"token": token},
         timeout=10
     )
     
     if response.status_code == 200:
-        return True, None, 200
+        return True, response.json(), 200
     else:
         return False, response.json(), response.status_code
     

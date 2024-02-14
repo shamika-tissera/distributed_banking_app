@@ -1,0 +1,6 @@
+commands:
+
+python -m venv myenv
+.\myenv\Scripts\activate
+python -m pip install flask pymysql
+python -m flask run

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Transaction Form</title>
+<style>
+  form {
+    max-width: 400px;
+    margin: 0 auto;
+  }
+  div {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+  }
+  div label {
+    width: 200px;
+    text-align: right;
+    margin-right: 10px;
+  }
+  div input[type="text"] {
+    flex: 1;
+    padding: 5px;
+  }
+  button {
+    margin-top: 10px;
+    display: block;
+    margin-left: auto;
+  }
+</style>
+</head>
+
+<body>
+
+<h2>Transaction Details</h2>
+
+<form id="transactionForm" action="/submit" method="post">
+  <div>
+    <label for="transactionAmount">Transaction Amount:</label>
+    <input type="text" id="transactionAmount" name="transactionAmount">
+  </div>
+  <div>
+    <label for="beneficiaryName">Beneficiary Name:</label>
+    <input type="text" id="beneficiaryName" name="beneficiaryName">
+  </div>
+  <div>
+    <label for="beneficiaryReference">Beneficiary Reference:</label>
+    <input type="text" id="beneficiaryReference" name="beneficiaryReference">
+  </div>
+  <div>
+    <label for="beneficiaryAccountNo">Beneficiary Account No:</label>
+    <input type="text" id="beneficiaryAccountNo" name="beneficiaryAccountNo">
+  </div>
+  <div>
+    <label for="transactionPurpose">Transaction Purpose:</label>
+    <input type="text" id="transactionPurpose" name="transactionPurpose">
+  </div>
+  <div>
+    <label for="bankName">Bank Name:</label>
+    <input type="text" id="bankName" name="bankName">
+  </div>
+  <div>
+    <button type="submit">Submit</button>
+    <button type="button" onclick="resetForm()">Reset</button>
+  </div>
+</form>
+
+<script>
+  function resetForm() {
+    document.getElementById("transactionForm").reset();
+  }
+</script>
+
+</body>
+</html>

@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: auth-configmap
 data:
-  SQLSERVER_HOST: host.docker.internal
-  SQLSERVER_USER: sa
-  SQLSERVER_DB: Distributed_Banking_DB
-  SQLSERVER_PORT: None 
+  SQLSERVER_HOST: tcp:distributed-systems-banking-app.database.windows.net
+  SQLSERVER_USER: banking-app-admin
+  SQLSERVER_DB: Distributed_Banking_DB_Cloud
+  SQLSERVER_PORT: "1433"

@@ -4,6 +4,8 @@ from auth_svc.login import login as login_service
 from auth_svc.validate_token import validate_token
 from transaction_svc.transaction_deposit import deposit as deposit_service
 from transaction_svc.transaction_withdraw import withdraw as withdraw_service
+from transaction_svc.transaction_get_balance import get_account_balance as request_account_balance
+from transaction_svc.transaction_get_balance import get_account_balance_response
 
 
 app = Flask(__name__)
@@ -41,13 +43,13 @@ def deposit():
     if not is_valid_token:
         return jsonify(msg), status_code
     
-    deposit_status, err = deposit_service(msg['username'], request, channel)
+    deposit_status, err = deposit_service(msg['user'], request, channel)
     
     if deposit_status:
         return jsonify({"message": "Deposit successful"}), 200
     else:
         print(err)
-        return jsonify({"message": "Internal failure"}), 500
+        return jsonify({"message": err}), 500
 
 @app.route("/withdraw", methods=["POST"])
 def withdraw():
@@ -68,6 +70,31 @@ def withdraw():
         return jsonify({"message": "Withdraw successful"}), 200
     else:
         return jsonify(error_msg), status_code
+
+@app.route("/get-account-balance", methods=["GET"])
+def get_account_balance():
+    """
+    Get the account balance of the user.
+
+    Returns:
+        If the request is successful, returns a JSON response with the account balance and a status code of 200.
+        If there is an error during the request, returns a JSON response with an error message and the corresponding status code.
+    """
+    is_valid_token, msg, status_code = validate_token(request)
     
+    if not is_valid_token:
+        return jsonify(msg), status_code
+    
+    status, err, message_id = request_account_balance(msg['user'], channel)
+    
+    if not status:
+        return jsonify({"message": err}), 500
+    else:
+        balance: int|None = get_account_balance_response(message_id)
+        if balance is None:
+            return jsonify({"message": "Internal failure"}), 500
+        else:
+            return jsonify({"balance": balance}), 200
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080)

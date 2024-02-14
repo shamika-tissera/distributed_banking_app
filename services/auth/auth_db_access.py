@@ -9,10 +9,11 @@ from enums import RegisterUserInfo
 
 connection = pyodbc.connect(
     "Driver={ODBC Driver 17 for SQL Server};"
-    f"Server={os.environ.get('SQLSERVER_HOST')};"
+    f"Server={os.environ.get('SQLSERVER_HOST')},{os.environ.get('SQLSERVER_PORT')};"
     f"Database={os.environ.get('SQLSERVER_DB')};"
-    f"UID={os.environ.get('SQLSERVER_USER')};"
-    f"PWD={os.environ.get('SQLSERVER_PASSWORD')};"
+    f"Uid={os.environ.get('SQLSERVER_USER')};"
+    f"Pwd={{{os.environ.get('SQLSERVER_PASSWORD')}}};"
+    "Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;"
 )
 
 def login(username: str, password: str) -> bool:

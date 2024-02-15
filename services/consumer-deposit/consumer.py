@@ -21,8 +21,8 @@ def main():
         try:
             cursor = db_connection.cursor()
             cursor.execute(f"""
-                            INSERT INTO customer_cash (username, amount)
-                            VALUES ('{message['username']}', {message['amount']})
+                            INSERT INTO customer_cash (username, amount, status)
+                            VALUES ('{message['username']}', {message['amount']}, 'Complete')
                             """
                             )
             db_connection.commit()

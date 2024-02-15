@@ -1,3 +1,4 @@
+from typing import Optional
 import pika
 from flask import Flask, request, jsonify
 from auth_svc.login import login as login_service
@@ -90,7 +91,7 @@ def get_account_balance():
     if not status:
         return jsonify({"message": err}), 500
     else:
-        balance: int|None = get_account_balance_response(message_id)
+        balance: Optional[int] = get_account_balance_response(message_id)
         if balance is None:
             return jsonify({"message": "Internal failure"}), 500
         else:

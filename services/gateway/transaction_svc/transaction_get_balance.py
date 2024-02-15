@@ -1,3 +1,4 @@
+from typing import Optional
 from flask import jsonify
 import requests
 import pika
@@ -37,7 +38,7 @@ def get_account_balance(username, channel):
 
     return True, None, message["message_id"]
 
-def get_account_balance_response(message_id) -> int|None:
+def get_account_balance_response(message_id) -> Optional[int]:
     """
     Get the account balance response from the message broker.
 

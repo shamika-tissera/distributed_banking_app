@@ -38,7 +38,7 @@ def login():
             "exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=30)
         }, app.config["JWT_SECRET"],
             algorithm="HS256")
-        return jsonify({"token": str(token)})
+        return jsonify(str(token))
 
 @app.route("/auth/register", methods=["POST"])
 def register():

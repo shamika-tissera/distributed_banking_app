@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: transactions
+  labels:
+    app: transactions
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: transactions
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 3
+  template:
+    metadata:
+      labels:
+        app: transactions
+    spec:
+      containers:
+        - name: transactions
+          image: shamikatissera/transactions:latest
+          ports:
+            - containerPort: 5000
+          envFrom:
+            - configMapRef:
+                name: transactions-configmap
+            - secretRef:
+                name: transactions-secret

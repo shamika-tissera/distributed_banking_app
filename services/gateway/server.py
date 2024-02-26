@@ -7,9 +7,12 @@ from transaction_svc.transaction_deposit import deposit as deposit_service
 from transaction_svc.transaction_withdraw import withdraw as withdraw_service
 from transaction_svc.transaction_get_balance import get_account_balance as request_account_balance
 from transaction_svc.transaction_get_balance import get_account_balance_response
+from transaction_svc.transaction_get_balance import get_transaction_list
+from flask_cors import CORS
 
 
 app = Flask(__name__)
+CORS(app)
 
 connection = pika.BlockingConnection(pika.ConnectionParameters('rabbitmq'))
 channel = connection.channel()
@@ -29,6 +32,22 @@ def login():
         return jsonify({"token": token}), 200
     else:
         return jsonify({"message": "Invalid credentials"}), 401
+
+@app.route("/check-token", methods=["POST"])
+def check_token():
+    """
+    Validates the given token by making a request to the authentication service.
+
+    Returns:
+        If the token is valid, returns a JSON response with a success message and a status code of 200.
+        If the token is invalid, returns a JSON response with an error message and a status code of 401.
+    """
+    is_valid_token, msg, status_code = validate_token(request.headers.get('Authorization'))
+    
+    if is_valid_token:
+        return jsonify({"message": "Token is valid"}), 200
+    else:
+        return jsonify(msg), status_code
 
 @app.route("/deposit", methods=["POST"])
 def deposit():
@@ -96,6 +115,25 @@ def get_account_balance():
             return jsonify({"message": "Internal failure"}), 500
         else:
             return jsonify({"balance": balance}), 200
+        
+@app.route("/get_transactions/<username>", methods=["GET"])
+def get_transactions(username):
+    """
+    Get the transaction list of the user.
+
+    Args:
+        username: The username of the user.
+
+    Returns:
+        If the request is successful, returns a JSON response with the transaction list and a status code of 200.
+        If there is an error during the request, returns a JSON response with an error message and the corresponding status code.
+    """
+    is_success, err, transactions = get_transaction_list(username)
+
+    if is_success:
+        return jsonify({"transactions": transactions}), 200
+    else:
+        return jsonify(err), 500
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080)

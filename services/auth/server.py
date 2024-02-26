@@ -1,4 +1,5 @@
 import inspect
+from flask_cors import CORS
 import sys
 import auth_db_access
 import logging
@@ -14,6 +15,7 @@ from flask import jsonify
 from enums import RegisterUserInfo
 
 app = Flask(__name__)
+CORS(app)
 
 app.config["JWT_SECRET"] = os.environ.get("JWT_SECRET")
 @app.route("/auth/login", methods=["POST"])

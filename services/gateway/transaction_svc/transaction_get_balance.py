@@ -5,6 +5,7 @@ import pika
 import json
 import uuid
 import time
+import os
 
 def get_account_balance(username, channel):
     """
@@ -73,3 +74,14 @@ def get_account_balance_response(message_id) -> Optional[int]:
         
     channel.basic_consume(queue="check_balance_responses", on_message_callback=callback)
     channel.start_consuming()
+    
+def get_transaction_list(username):
+    response = requests.get(
+        f"http://{os.environ.get('TRANSACTION_SVC_ADDRESS')}/transactions/get-transaction-list/{username}",
+        timeout=10
+    )
+    
+    if response.status_code == 200:
+        return True, None, response.json()["transactions"]
+    else:
+        return False, response.json(), None

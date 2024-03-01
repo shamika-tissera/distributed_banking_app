@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/services/account_management/account_management.iml" filepath="$PROJECT_DIR$/services/account_management/account_management.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/distributed_banking_app.iml" filepath="$PROJECT_DIR$/.idea/distributed_banking_app.iml" />
     </modules>
   </component>

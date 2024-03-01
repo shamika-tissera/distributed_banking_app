@@ -13,6 +13,7 @@ import jwt
 from flask import Flask, request
 from flask import jsonify
 from enums import RegisterUserInfo
+from waitress import serve
 
 app = Flask(__name__)
 CORS(app)
@@ -90,4 +91,4 @@ if __name__ == "__main__":
     # print IP address
     print(os.popen('hostname -I').read())
     
-    app.run(host="0.0.0.0", port=5000)
+    serve(app, host="0.0.0.0", port=5000)

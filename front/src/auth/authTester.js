@@ -3,7 +3,6 @@ import swal from "sweetalert";
 import { AppConfig } from '../utils/config';
 
 export const AuthTester = () => {
-
     // Backend URLs
     const authTestUrl = AppConfig.baseUrl + AppConfig.authTestEndpoint;
 

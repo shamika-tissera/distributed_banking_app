@@ -9,6 +9,7 @@ from transaction_svc.transaction_get_balance import get_account_balance as reque
 from transaction_svc.transaction_get_balance import get_account_balance_response
 from transaction_svc.transaction_get_balance import get_transaction_list
 from flask_cors import CORS
+from waitress import serve
 
 
 app = Flask(__name__)
@@ -136,4 +137,4 @@ def get_transactions(username):
         return jsonify(err), 500
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8080)
+    serve(app, host="0.0.0.0", port=8080)

@@ -1,6 +1,7 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
 import db_access
+from waitress import serve
 
 app = Flask(__name__)
 CORS(app)
@@ -25,4 +26,4 @@ def get_transaction_list(username):
         return jsonify({"transactions": transactions}), 200
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    serve(app, host="0.0.0.0.", port=5000)

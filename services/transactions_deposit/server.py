@@ -11,6 +11,7 @@ import jwt
 from flask import Flask, request
 from flask import jsonify
 from enums import DepositTransactionStatus
+from waitress import serve
 
 app = Flask(__name__)
 
@@ -64,4 +65,4 @@ def transactions_deposit():
         return jsonify({"message": "Internal failure"}), 500
     
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5001)
+    serve(app, host="0.0.0.0", port=5001)

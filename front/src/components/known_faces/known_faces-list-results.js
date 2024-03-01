@@ -174,6 +174,10 @@ export const KnownFacesListResults = ({ faces, ...rest }) => {
     return (
       <Backdrop open={true}>
         <CircularProgress color="inherit" />
+        <br />
+        <br />
+
+        <p>  Getting your data... Keep smiling! 😁</p>
       </Backdrop>
     )
   }

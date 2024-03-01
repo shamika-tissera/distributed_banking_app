@@ -38,7 +38,7 @@ def login():
         logging.info("User {} logged in".format(auth['username']))
         token = jwt.encode({
             "user": auth['username'],
-            "exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=30)
+            "exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=120)
         }, app.config["JWT_SECRET"],
             algorithm="HS256")
         return jsonify(str(token))

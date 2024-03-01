@@ -12,12 +12,12 @@ def get_transaction_list(username):
         A JSON response with an error message if the request is unsuccessful.
     """
     db_connection = pyodbc.connect(
-    "Driver={ODBC Driver 17 for SQL Server};"
-    f"Server={os.environ.get('SQLSERVER_HOST')},{os.environ.get('SQLSERVER_PORT')};"
-    f"Database={os.environ.get('SQLSERVER_DB')};"
-    f"Uid={os.environ.get('SQLSERVER_USER')};"
-    f"Pwd={{{os.environ.get('SQLSERVER_PASSWORD')}}};"
-    "Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;"
+        "Driver={ODBC Driver 17 for SQL Server};"
+        f"Server={os.environ.get('SQLSERVER_HOST')},{os.environ.get('SQLSERVER_PORT')};"
+        f"Database={os.environ.get('SQLSERVER_DB')};"
+        f"Uid={os.environ.get('SQLSERVER_USER')};"
+        f"Pwd={{{os.environ.get('SQLSERVER_PASSWORD')}}};"
+        "Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;"
     )
 
     cursor = db_connection.cursor()

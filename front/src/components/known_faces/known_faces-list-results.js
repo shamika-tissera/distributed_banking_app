@@ -70,6 +70,19 @@ export const KnownFacesListResults = ({ faces, ...rest }) => {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [chartData, setChartData] = useState([]);
 
+
+  // check if local storage is empty or has a jwt token
+  // if empty, redirect to login page
+  useEffect(() => {
+    if (localStorage.getItem("jwt_token") === null) {
+      swal("You are not logged in!", "Please login to continue", "error").then(() => {
+        window.location.href = "/login";
+      });
+    }
+  }
+    , []);
+
+
   const data1 = [
     ["Date", "Cumulative Cash Flow"],
     ["2004", 1000],
@@ -98,6 +111,7 @@ export const KnownFacesListResults = ({ faces, ...rest }) => {
   }, [])
 
   useEffect(() => {
+    console.log(getTransactionsListUrl + "/" + localStorage.getItem('username'))
     fetch(getTransactionsListUrl + "/" + localStorage.getItem('username'), {
       method: "GET",
       headers: {

@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: web
+  template:
+    metadata:
+      labels:
+        component: web
+    spec:
+      containers:
+        - name: client
+          image: shamikatissera/banking-webapp:latest
+          ports:
+            - containerPort: 3000
+          envFrom:
+            - configMapRef:
+                name: client-configmap
+            - secretRef:
+                name: client-secret

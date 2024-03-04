@@ -17,6 +17,7 @@ from waitress import serve
 
 app = Flask(__name__)
 CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 app.config["JWT_SECRET"] = os.environ.get("JWT_SECRET")
 @app.route("/auth/login", methods=["POST"])

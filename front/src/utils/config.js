@@ -1,7 +1,26 @@
+let serverAddress;
+
+// get server ip
+if (typeof window !== 'undefined') {
+  // get server ip
+  serverAddress = window.location.host;
+  console.log(serverAddress);
+
+  // if the server ip has a port number, remove it
+  if (serverAddress.includes(":")) {
+      serverAddress = serverAddress.split(":")[0];
+  }
+}
+
+// // if the server ip has a port number, remove it
+// if (serverAddress.includes(":")) {
+//     serverAddress = serverAddress.split(":")[0];
+// }
+
 export const AppConfig = {
 
     // backend api url
-    baseUrl: "http://distributed-banking-app.kln.ac.lk",
+    baseUrl: process.env.SERVICE_URL ? process.env.SERVICE_URL + "/gateway" : "http://gateway:80/gateway",
 
     /*  Endpoints   */
 

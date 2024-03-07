@@ -3,7 +3,7 @@ import axios from 'axios';
 import "./LoginSignup.css";
 import { AppConfig } from '../../utils/config';
 import { useFormik } from 'formik';
-import swal from 'sweetalert';
+import Swal from 'sweetalert2'
 import * as Yup from 'yup';
 import Router from 'next/router';
 import user_icon from "../Assets/person.png";
@@ -45,11 +45,11 @@ const LoginSignup = () => {
             setToken(response.data["token"]);
           }
           else {
-            swal("Error", "Invalid credentials", "error");
+            Swal("Error", "Invalid credentials", "error");
           }
         })
         .catch((error) => {
-          swal("Error", "Invalid credentials", "error");
+          Swal("Error", "Invalid credentials", "error");
         });
     }
   });

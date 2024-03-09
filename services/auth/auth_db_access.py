@@ -9,10 +9,10 @@ from enums import RegisterUserInfo
 
 connection = pyodbc.connect(
     "Driver={ODBC Driver 17 for SQL Server};"
-    f"Server={os.environ.get('SQLSERVER_HOST')},{os.environ.get('SQLSERVER_PORT')};"
-    f"Database={os.environ.get('SQLSERVER_DB')};"
-    f"Uid={os.environ.get('SQLSERVER_USER')};"
-    f"Pwd={{{os.environ.get('SQLSERVER_PASSWORD')}}};"
+    f"Server=tcp:distributed-systems-banking-db.database.windows.net,1433;"
+    f"Database=distributed-systems-banking-app;"
+    f"Uid=banking-app-admin;"
+    "Pwd={16!7250%z2$X76&};"
     "Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;"
 )
 

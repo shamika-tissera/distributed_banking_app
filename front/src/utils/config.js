@@ -9,6 +9,10 @@ if (typeof window !== 'undefined') {
   // if the server ip has a port number, remove it
   if (serverAddress.includes(":")) {
       serverAddress = serverAddress.split(":")[0];
+      serverAddress += ":5000";
+
+      // add http to the server ip
+      serverAddress = "http://" + serverAddress;
   }
 }
 
@@ -20,12 +24,13 @@ if (typeof window !== 'undefined') {
 export const AppConfig = {
 
     // backend api url
-    baseUrl: process.env.SERVICE_URL ? process.env.SERVICE_URL + "/gateway" : "http://gateway:80/gateway",
+    baseUrl: serverAddress,
 
     /*  Endpoints   */
 
     getTransactionsListEndpoint: "/get_transactions",
     depositEndpoint: "/deposit",
+    withdrawEndpoint: "/withdraw",
 
     // authentication
     loginEndpoint: "/login",

@@ -1,0 +1,86 @@
+version: '3'
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - 15672:15672
+      - 5672:5672
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+  auth:
+    image: shamikatissera/auth:latest
+    ports:
+      - 5001:5000
+    environment:
+      - SQLSERVER_PASSWORD=16!7250%z2$X76&
+      - JWT_SECRET=hftAs9zyQCf5
+      - SQLSERVER_HOST=tcp:distributed-systems-banking-db.database.windows.net
+      - SQLSERVER_USER=banking-app-admin
+      - SQLSERVER_DB=distributed-systems-banking-app
+      - SQLSERVER_PORT=1433
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+
+  gateway:
+    image: shamikatissera/gateway
+    depends_on:
+      - rabbitmq
+      - auth
+      - transactions
+    ports:
+      - 5000:8080
+    environment:
+      - AUTH_SVC_ADDRESS=auth:5001
+      - TRANSACTION_SVC_ADDRESS=transactions:5002
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+
+  transactions:
+    image: shamikatissera/transactions:latest
+    ports:
+      - 5002:5000
+    environment:
+      - SQLSERVER_PASSWORD=16!7250%z2$X76&
+      - JWT_SECRET="hftAs9zyQCf5"
+      - SQLSERVER_HOST="tcp:distributed-systems-banking-db.database.windows.net"
+      - SQLSERVER_USER="banking-app-admin"
+      - SQLSERVER_DB="distributed-systems-banking-app"
+      - SQLSERVER_PORT="1433"
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+
+  client:
+    image: shamikatissera/banking-webapp:latest
+    ports:
+      - 3000:3000
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+  loadbalancer:
+    image: nginx:latest
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    networks:
+      - default
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+volumes:
+  rabbitmq-data:

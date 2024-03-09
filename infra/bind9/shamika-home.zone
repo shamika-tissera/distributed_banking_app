@@ -1,0 +1,17 @@
+$TTL 2d
+
+$ORIGIN shamika.home.
+
+@       IN      SOA     ns.shamika.home. root.shamika.home. (
+                        2024032400 ; serial
+                        3h ; refresh
+                        1h ; retry
+                        1w ; expire
+                        3h ; minimum
+                        )
+
+        IN      NS      ns.shamika.home.
+
+ns      IN      A       192.168.1.12
+
+srv-prod-1      IN      A       192.168.1.12

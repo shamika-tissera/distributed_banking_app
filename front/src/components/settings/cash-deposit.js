@@ -35,8 +35,10 @@ export const CashDeposit = (props) => {
         },
 
         validationSchema: Yup.object({
-            deposit_amount: Yup.number().required("Deposit amount is required"),
-        }),
+            deposit_amount: Yup.number()
+            .min(1, "Deposit amount must be positive") // minimum value is 1
+            .required("Deposit amount is required"),
+          }),
 
         onSubmit: () => {
             handleSubmit();

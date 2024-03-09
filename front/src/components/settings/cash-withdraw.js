@@ -19,8 +19,8 @@ import * as Yup from "yup";
 export const CashWithdraw = (props) => {
 
     // Backend URLs
-    const depositUrl = AppConfig.baseUrl + AppConfig.depositEndpoint;
-    const updateDvrConfigUrl = AppConfig.baseUrl + AppConfig.updateDvrConfigEndpoint;
+    const withdrawUrl = AppConfig.baseUrl + AppConfig.withdrawEndpoint;
+    // const updateDvrConfigUrl = AppConfig.baseUrl + AppConfig.updateDvrConfigEndpoint;
 
     const [values, setValues] = useState({
         withdraw_amount: 0
@@ -35,7 +35,9 @@ export const CashWithdraw = (props) => {
         },
 
         validationSchema: Yup.object({
-            withdraw_amount: Yup.number().required("Deposit amount is required"),
+          withdraw_amount: Yup.number()
+          .min(1, "Withdraw amount must be positive") // minimum value is 1
+          .required("Withdraw amount is required"),
         }),
 
         onSubmit: () => {
@@ -84,7 +86,7 @@ export const CashWithdraw = (props) => {
           amount: formik.values.withdraw_amount
         }
 
-        fetch(depositUrl, {
+        fetch(withdrawUrl, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

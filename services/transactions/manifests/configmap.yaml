@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: transactions-configmap
 data:
-  SQLSERVER_HOST: tcp:distributed-systems-banking-app.database.windows.net
+  SQLSERVER_HOST: tcp:distributed-systems-banking-db.database.windows.net
   SQLSERVER_USER: banking-app-admin
-  SQLSERVER_DB: Distributed_Banking_DB_Cloud
+  SQLSERVER_DB: distributed-systems-banking-app
   SQLSERVER_PORT: "1433"

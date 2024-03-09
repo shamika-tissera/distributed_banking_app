@@ -10,9 +10,11 @@ import constants
 
 connection = pyodbc.connect(
     "Driver={ODBC Driver 17 for SQL Server};"
-    f"Server={constants.SQLSERVER_HOST};"
-    f"Database={constants.SQLSERVER_DB};"
-    "Trusted_Connection=yes;"
+    f"Server=tcp:distributed-systems-banking-db.database.windows.net,1433;"
+    f"Database=distributed-systems-banking-app;"
+    f"Uid=banking-app-admin;"
+    "Pwd={16!7250%z2$X76&};"
+    "Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;"
 )
 
 def is_valid_user(username: str) -> bool:

@@ -18,13 +18,14 @@ from waitress import serve
 app = Flask(__name__)
 CORS(app)
 
-app.config["JWT_SECRET"] = os.environ.get("JWT_SECRET")
+app.config["JWT_SECRET"] = 'hftAs9zyQCf5'
 @app.route("/auth/login", methods=["POST"])
 def login():
     """
     Authenticates the user and generates a JWT token.
 
     Returns:
+    
         JSON response: A JSON response containing the generated token if the authentication is successful.
             Otherwise, returns an error message with the appropriate status code.
     """
@@ -41,7 +42,7 @@ def login():
             "exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=120)
         }, app.config["JWT_SECRET"],
             algorithm="HS256")
-        return jsonify(str(token))
+        return jsonify({"token": token})
 
 @app.route("/auth/register", methods=["POST"])
 def register():

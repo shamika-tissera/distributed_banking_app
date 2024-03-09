@@ -27,7 +27,7 @@ def login():
         If the credentials are valid, returns a JSON response containing the token and a status code of 200.
         If the credentials are invalid, returns a JSON response with an error message and a status code of 401.
     """
-    token, status = login_service(request)
+    token, status = login_service(request, request.host)
     
     if status == 200:
         return jsonify({"token": token}), 200

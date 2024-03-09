@@ -7,18 +7,26 @@ import bcrypt
 sys.path.append(os.path.abspath('.'))
 from enums import RegisterUserInfo
 
-connection = pyodbc.connect(
-    "Driver={ODBC Driver 17 for SQL Server};"
-    f"Server={os.environ.get('SQLSERVER_HOST')},{os.environ.get('SQLSERVER_PORT')};"
-    f"Database={os.environ.get('SQLSERVER_DB')};"
-    f"Uid={os.environ.get('SQLSERVER_USER')};"
-    f"Pwd={{{os.environ.get('SQLSERVER_PASSWORD')}}};"
-    "Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;"
-)
+# db_connection = pyodbc.connect(
+#         "Driver={ODBC Driver 17 for SQL Server};"
+#         "Server=tcp:distributed-systems-banking-db.database.windows.net,1433;"
+#         "Database=distributed-systems-banking-app;"
+#         "Uid=banking-app-admin;"
+#         "Pwd={16!7250%z2$X76&};"
+#         "Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;"
+# )
 
 def login(username: str, password: str) -> bool:
     """Checks if the user is valid in the database"""
-    cursor = connection.cursor()
+    db_connection = pyodbc.connect(
+        "Driver={ODBC Driver 17 for SQL Server};"
+        "Server=tcp:distributed-systems-banking-db.database.windows.net,1433;"
+        "Database=distributed-systems-banking-app;"
+        "Uid=banking-app-admin;"
+        "Pwd={16!7250%z2$X76&};"
+        "Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;"
+    )
+    cursor = db_connection.cursor()
 
     cursor.execute(f"""
                     SELECT password 
@@ -44,7 +52,15 @@ def login(username: str, password: str) -> bool:
         return False
         
 def register(username: str, password: str, email: str = "") -> RegisterUserInfo:
-    cursor = connection.cursor()
+    db_connection = pyodbc.connect(
+        "Driver={ODBC Driver 17 for SQL Server};"
+        "Server=tcp:distributed-systems-banking-db.database.windows.net,1433;"
+        "Database=distributed-systems-banking-app;"
+        "Uid=banking-app-admin;"
+        "Pwd={16!7250%z2$X76&};"
+        "Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;"
+    )
+    cursor = db_connection.cursor()
     salt = bcrypt.gensalt()
     try:
         
@@ -73,7 +89,15 @@ def register(username: str, password: str, email: str = "") -> RegisterUserInfo:
     return RegisterUserInfo.SUCCESS
 
 def is_valid_user(username: str) -> bool:
-    cursor = connection.cursor()
+    db_connection = pyodbc.connect(
+        "Driver={ODBC Driver 17 for SQL Server};"
+        "Server=tcp:distributed-systems-banking-db.database.windows.net,1433;"
+        "Database=distributed-systems-banking-app;"
+        "Uid=banking-app-admin;"
+        "Pwd={16!7250%z2$X76&};"
+        "Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;"
+    )
+    cursor = db_connection.cursor()
     cursor.execute(f"""
                     SELECT username 
                     FROM users 
